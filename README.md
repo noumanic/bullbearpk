@@ -1,357 +1,221 @@
-# 🎯 **Complete BullBearPK Agentic System - Files, Usage & Flow**
+# 🐂 BullBearPK: AI-Driven Agentic Investment Advisor
 
-## 📁 **System Architecture Overview**
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/)
+[![React](https://img.shields.io/badge/Frontend-React%20%2B%20Vite-61dafb.svg)](https://react.dev/)
+[![Flask](https://img.shields.io/badge/Backend-Flask-lightgrey.svg)](https://flask.palletsprojects.com/)
+[![LangGraph](https://img.shields.io/badge/AI-LangGraph%20%2B%20CrewAI-blueviolet.svg)](https://www.langchain.com/langgraph)
+[![Status](https://img.shields.io/badge/Status-Production--Ready-success.svg)]()
 
+**BullBearPK** is a sophisticated, full-stack investment analysis platform designed specifically for the **Pakistan Stock Exchange (PSX)**. By leveraging a multi-agentic AI framework built on LangGraph and CrewAI, it provides retail investors with institutional-grade technical analysis, sentiment tracking, and personalized portfolio recommendations.
+
+---
+
+## 🚀 **Key Value Proposition**
+
+In the volatile world of emerging markets, individual investors often lack the tools to process vast amounts of financial data and news. **BullBearPK** solves this by:
+- **Automating Data Intake**: Real-time scraping of PSX and global financial news.
+- **Agentic Intelligence**: 9 specialized AI agents working in a coordinated workflow to provide holistic insights.
+- **Personalized Risk Mitigation**: Dynamic risk profiling that adapts to your investment history and financial goals.
+- **Execution Ready**: Direct translation of AI insights into executable portfolio strategies.
+
+---
+
+## 🛠️ **Tech Stack**
+
+### **Frontend**
+- **Framework**: React 18 with Vite (TypeScript)
+- **State Management**: Zustand
+- **Visualization**: Recharts & Framer Motion
+- **Styling**: Tailwind CSS & Lucide Icons
+
+### **Backend & API**
+- **Core**: Python (Flask)
+- **Database**: MySQL (optimized for financial time-series and user records)
+- **Connectivity**: RESTful API with modular Blueprints
+
+### **AI & Agentic Layer**
+- **Orchestration**: LangGraph (State Machine)
+- **Agent Framework**: CrewAI
+- **LLMs**: OpenAI (GPT-4), Groq (for fast inference)
+- **Scraping**: Selenium & BeautifulSoup4
+- **NLP**: TextBlob (Sentiment Analysis)
+
+---
+
+## 🧠 **System Intelligence**
+
+### **High-Level Architecture**
+The system is built on a 4-tier modular architecture ensuring scalability and decoupled concerns.
+
+```mermaid
+graph TD
+    subgraph Frontend ["🌐 Frontend (React + Vite)"]
+        UI["💻 User Interface (Tailwind CSS)"]
+        Store["📦 State Management (Zustand)"]
+        Axios["📡 API Services (Axios)"]
+    end
+
+    subgraph Backend ["⚙️ Backend (Flask API)"]
+        Server["🚀 API Server (api_server.py)"]
+        Blueprints["📋 Modular Blueprints (Auth, Market, Portfolio)"]
+    end
+
+    subgraph AI_Core ["🤖 Agentic Core (LangGraph)"]
+        Orchestrator["🧠 AgenticFramework"]
+        Agents["🕵️ Specialized Agents (Scrapers, Analyzers)"]
+    end
+
+    subgraph Data_Layer ["🗄️ Data Layer"]
+        DB[("🗄️ MySQL Database")]
+        FS["📁 File Storage (Scraped Data/Logs)"]
+    end
+
+    Frontend -- "REST API (Axios)" --> Backend
+    Backend -- "Workflow Dispatch" --> AI_Core
+    AI_Core -- "SQL (mysql-connector)" --> Data_Layer
+    Backend -- "SQL (mysql-connector)" --> Data_Layer
+
+    style Frontend fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    style Backend fill:#fff9c4,stroke:#fbc02d,stroke-width:2px
+    style AI_Core fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    style Data_Layer fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
 ```
-Frontend (React) → Backend (Flask API) → LangGraph Agentic Framework → MySQL Database
+
+### **Agentic Workflow (LangGraph State Machine)**
+Our specialized agents execute a deterministic yet flexible graph-based workflow.
+
+```mermaid
+stateDiagram-v2
+    direction TB
+    [*] --> ScrapeStocks: User Input Received
+    
+    state "🔍 Stock Scraper" as ScrapeStocks
+    state "📊 Stock Analyzer" as AnalyzeStocks
+    state "🗞️ News Scraper" as ScrapeNews
+    state "🧠 News Analyzer" as AnalyzeNews
+    state "⚖️ Risk Checker" as CheckRisk
+    state "🕰️ Past Investments" as CheckPast
+    state "💼 Portfolio Checker" as CheckPortfolio
+    state "💡 Recommendation Agent" as GenerateRecs
+    state "✍️ Decision Handler" as HandleDecision
+
+    ScrapeStocks --> AnalyzeStocks: Raw Stock Data
+    AnalyzeStocks --> ScrapeNews: Top Performers
+    ScrapeNews --> AnalyzeNews: Raw News Data
+    AnalyzeNews --> CheckRisk: Sentiment Scores
+    CheckRisk --> CheckPast: Risk Profile
+    CheckPast --> CheckPortfolio: Transaction History
+    CheckPortfolio --> GenerateRecs: Portfolio Health
+    GenerateRecs --> HandleDecision: Tailored Strategy
+    HandleDecision --> [*]: DB Updated & Executed
+
+    classDef Scraper fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
+    classDef Analyzer fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000
+    classDef Checker fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+    classDef Agent fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#000
+
+    class ScrapeStocks,ScrapeNews Scraper
+    class AnalyzeStocks,AnalyzeNews Analyzer
+    class CheckRisk,CheckPast,CheckPortfolio Checker
+    class GenerateRecs,HandleDecision Agent
 ```
 
 ---
 
-## 🤖 **Complete Agentic Workflow**
+## 🕵️ **Meet the Agents**
 
-### **1. User Input Phase**
-```
-User fills form → Input Taker Agent → LangGraph Framework
-```
-
-### **2. Data Collection Phase**
-```
-Stock Scraper → Stock Analyzer → News Scraper → News Analyzer
-```
-
-### **3. Analysis Phase**
-```
-Risk Checker → Past Investments Checker → Portfolio Checker
-```
-
-### **4. Decision Phase**
-```
-Recommendation Agent → Manager Record Agent → Database Updates
-```
+| Agent | Expertise | Capability |
+| :--- | :--- | :--- |
+| **Input Taker** | User Interface | Validates inputs and prepares session state |
+| **Stock Scraper** | Data Acquisition | Real-time extraction of PSX market data via Selenium |
+| **Stock Analyzer** | Technical Analysis | Computes 60+ indicators (RSI, MACD, Bollinger Bands) |
+| **News Scraper** | OSINT Extraction | Aggregates financial news from RSS and Web sources |
+| **News Analyzer** | Sentiment Engine | Quantifies market sentiment and identifies key events |
+| **Risk Checker** | Risk Management | Behavioral assessment and quantitative risk scoring |
+| **Past Investments**| History Analysis | Pattern recognition in user portfolio history |
+| **Portfolio Checker**| Portfolio Health | Real-time P&L tracking and diversification analysis |
+| **Recommendation** | AI Strategist | Synthesizes all data into personalized stock picks |
+| **Manager Record** | Transactional | Executes decisions and maintains database integrity |
 
 ---
 
-## 📁 **File Structure & Purpose**
+## 🗄️ **Data Schema Details**
 
-### **🏗️ Core Framework Files**
-
-| File | Purpose | Status |
-|------|---------|--------|
-| `agentic_framework.py` | **Main LangGraph orchestrator** - Manages entire workflow | ✅ Active |
-| `api_server.py` | **Flask API server** - Handles HTTP requests | ✅ Active |
-| `database_config.py` | **Database connection manager** - MySQL operations | ✅ Active |
-
-### **🤖 Agent Files**
-
-| Agent | File | Purpose | Status |
-|-------|------|---------|--------|
-| **Input Taker** | `agents/input_taker.py` | **User input validation & processing** | ✅ Active |
-| **Stock Scraper** | `agents/fin_scraper.py` | **Scrapes PSX stock data** | ✅ Active |
-| **Stock Analyzer** | `agents/advanced_stock_analyzer.py` | **Advanced technical analysis** | ✅ Active |
-| **News Scraper** | `agents/news_scraper.py` | **Scrapes news for top stocks** | ✅ Active |
-| **News Analyzer** | `agents/news_analyzer.py` | **News sentiment analysis** | ✅ Active |
-| **Risk Checker** | `agents/risk_checker.py` | **User risk profile analysis** | ✅ Active |
-| **Past Investments** | `agents/past_investments_checker.py` | **Investment history analysis** | ✅ Active |
-| **Portfolio Checker** | `agents/portfolio_checker.py` | **Current portfolio analysis** | ✅ Active |
-| **Recommendation** | `agents/recommendation_agent.py` | **Generates final recommendations** | ✅ Active |
-| **Manager Record** | `agents/manager_record_agent.py` | **Handles user investment decisions** | ✅ Active |
-
-### **🌐 API Files**
-
-| File | Purpose | Status |
-|------|---------|--------|
-| `api/investment_routes.py` | **Investment management endpoints** | ✅ Active |
-| `api/recommendation_routes.py` | **Recommendation endpoints** | ✅ Active |
-
-### **🗄️ Database Files**
-
-| File | Purpose | Status |
-|------|---------|--------|
-| `database/mysql_schema.sql` | **Complete MySQL schema** | ✅ Active |
-| `portfolio_manager.py` | **Portfolio management utilities** | ✅ Active |
+| Table | Component | Primary Data |
+| :--- | :--- | :--- |
+| `users` | Identity | Goal-driven risk tolerance profiling |
+| `stocks` | Market Data | Core financial attributes of PSX-listed companies |
+| `stock_analysis`| Indicators | Extensive technical dataset for quantitative analysis |
+| `news_analysis` | NLP Insights | Sentiment scores and identified risk factors |
+| `portfolios` | Asset Mgmt | Historical snapshots of user holdings and valuation |
 
 ---
 
-## 🔄 **Detailed Workflow Flow**
+## 🏁 **Getting Started**
 
-### **Phase 1: User Input & Validation**
-```
-1. User fills investment form
-2. Input Taker Agent validates input
-3. Creates user profile if new user
-4. Passes data to LangGraph framework
-```
+### **1. Prerequisites**
+- **Python**: 3.8 or higher
+- **Node.js**: 16.0 or higher
+- **MySQL**: 8.0 or higher
 
-### **Phase 2: Data Collection**
-```
-5. Stock Scraper Agent:
-   - Scrapes PSX website
-   - Gets current stock prices
-   - Saves to stocks table
-   - Clears old data first
+### **2. Setup & Installation**
 
-6. Stock Analyzer Agent:
-   - Performs technical analysis
-   - Calculates 60+ indicators
-   - Ranks top 10 performers
-   - Saves to stock_analysis table
-```
-
-### **Phase 3: News Analysis**
-```
-7. News Scraper Agent:
-   - Takes top 10 stocks
-   - Scrapes RSS feeds & Google News
-   - Saves to news_records table
-   - Clears old news data
-
-8. News Analyzer Agent:
-   - Analyzes sentiment for each stock
-   - Calculates impact scores
-   - Saves to news_analysis table
-```
-
-### **Phase 4: User Analysis**
-```
-9. Risk Checker Agent:
-   - Analyzes user's past behavior
-   - Calculates risk tolerance
-   - Considers portfolio risk
-   - Returns comprehensive risk profile
-
-10. Past Investments Checker Agent:
-    - Analyzes investment history
-    - Calculates performance metrics
-    - Identifies patterns
-    - Returns investment insights
-
-11. Portfolio Checker Agent:
-    - Analyzes current holdings
-    - Calculates portfolio health
-    - Identifies new vs existing users
-    - Returns portfolio status
-```
-
-### **Phase 5: Recommendation Generation**
-```
-12. Recommendation Agent:
-    - Combines all analysis data
-    - Generates personalized recommendations
-    - Saves to recommendations table
-    - Returns detailed recommendations
-```
-
-### **Phase 6: User Decision Handling**
-```
-13. Manager Record Agent:
-    - Handles user investment decisions
-    - Updates investments table
-    - Updates portfolios table
-    - Tracks transaction history
-```
-
----
-
-## 📊 **Database Tables & Purpose**
-
-| Table | Purpose | Key Fields |
-|-------|---------|------------|
-| `users` | **User profiles** | user_id, risk_tolerance, investment_goal |
-| `stocks` | **Current stock data** | code, name, close_price, sector |
-| `stock_analysis` | **Technical analysis results** | 60+ technical indicators |
-| `news_records` | **Raw scraped news** | stock_code, title, content, link |
-| `news_analysis` | **News sentiment analysis** | sentiment_score, key_events |
-| `investments` | **User investment records** | transaction_type, quantity, P&L |
-| `portfolios` | **Portfolio snapshots** | total_value, performance metrics |
-| `recommendations` | **Generated recommendations** | stock_code, reasoning, confidence |
-
----
-
-## 🎯 **Agent Capabilities Summary**
-
-### **Input Taker Agent**
-- ✅ Validates user input
-- ✅ Creates user profiles
-- ✅ Formats data for framework
-- ✅ Interactive terminal interface
-
-### **Stock Scraper Agent**
-- ✅ Scrapes PSX website
-- ✅ Handles WebDriver setup
-- ✅ Clears old data
-- ✅ Saves to database
-
-### **Stock Analyzer Agent**
-- ✅ 60+ technical indicators
-- ✅ Performance ranking
-- ✅ Risk metrics
-- ✅ Top 10 filtering
-
-### **News Scraper Agent**
-- ✅ RSS feed scraping
-- ✅ Google News scraping
-- ✅ Duplicate removal
-- ✅ Content hashing
-
-### **News Analyzer Agent**
-- ✅ Sentiment analysis
-- ✅ Impact assessment
-- ✅ Key events extraction
-- ✅ Risk factor identification
-
-### **Risk Checker Agent**
-- ✅ Behavioral analysis
-- ✅ Portfolio risk assessment
-- ✅ Comprehensive risk scoring
-- ✅ Risk profile generation
-
-### **Past Investments Checker Agent**
-- ✅ Performance analysis
-- ✅ Pattern recognition
-- ✅ Sector analysis
-- ✅ Investment recommendations
-
-### **Portfolio Checker Agent**
-- ✅ Portfolio health analysis
-- ✅ New user detection
-- ✅ Performance tracking
-- ✅ Diversification analysis
-
-### **Recommendation Agent**
-- ✅ Multi-factor analysis
-- ✅ Personalized recommendations
-- ✅ Confidence scoring
-- ✅ Database storage
-
-### **Manager Record Agent**
-- ✅ Buy/Sell/Hold decisions
-- ✅ Transaction tracking
-- ✅ Portfolio updates
-- ✅ P&L calculation
-
----
-
-## 🔗 **API Endpoints**
-
-### **Investment Management**
-- `POST /api/investment/user-decision` - Handle single decision
-- `POST /api/investment/user-decisions/batch` - Handle multiple decisions
-- `GET /api/investment/portfolio/<user_id>/status` - Portfolio status
-- `GET /api/investment/portfolio/<user_id>/history` - Investment history
-
-### **Recommendations**
-- `POST /api/analysis/recommendations` - Generate recommendations
-- `GET /api/analysis/recommendations/history` - Recommendation history
-
----
-
-## 🚀 **System Benefits**
-
-1. **🎯 End-to-End Automation** - Complete investment workflow
-2. **⚡ Real-time Analysis** - Live data processing
-3. **🤖 AI-Powered Decisions** - Multi-agent intelligence
-4. **📈 Performance Tracking** - Comprehensive analytics
-5. **🔄 Scalable Architecture** - Modular agent system
-6. **🔒 Data Integrity** - Proper database management
-7. **🌐 API Ready** - Frontend integration ready
-8. **🧪 Tested** - Comprehensive testing suite
-
----
-
-## 🎯 **Current Status: PRODUCTION READY**
-
-The BullBearPK system is now **complete and production-ready** with:
-
-- ✅ **9 Active Agents** working in harmony
-- ✅ **Complete LangGraph Workflow** orchestration
-- ✅ **MySQL Database** with comprehensive schema
-- ✅ **Flask API** with all necessary endpoints
-- ✅ **Manager Record Agent** for decision handling
-- ✅ **Comprehensive Testing** and error handling
-
-**The system can now handle the complete investment lifecycle from data collection to decision execution!** 🚀
-
----
-
-## 🛠️ **Installation & Setup**
-
-### **Prerequisites**
-- Python 3.8+
-- MySQL 8.0+
-- Node.js 16+ (for frontend)
-
-### **Backend Setup**
+**Backend Installation:**
 ```bash
-cd backend
+# Clone the repository
+git clone https://github.com/yourusername/bullbearpk.git
+cd bullbearpk
+
+# Install backend dependencies
 pip install -r requirements.txt
 ```
 
-### **Database Setup**
+**Database Initialization:**
+1. Create a MySQL database named `bullbearpk`.
+2. Update the credentials in `database_config.py`.
+3. Import the schema:
 ```bash
-# Create database
-mysql -u root -p
-CREATE DATABASE bullbearpk;
-
-# Import schema
-mysql -u root -p bullbearpk < database/mysql_schema.sql
+mysql -u [username] -p bullbearpk < backend/database/mysql_schema.sql
 ```
 
-### **Configuration**
-Update `database_config.py` with your MySQL credentials:
-```python
-DB_CONFIG = {
-    'host': 'localhost',
-    'user': 'root',
-    'password': '123456',
-    'database': 'bullbearpk'
-}
+**Frontend Installation:**
+```bash
+cd frontend
+npm install
 ```
 
-### **Running the System**
+### **3. Running the Platform**
+
+**Launch Backend:**
 ```bash
-# Start the API server
+cd backend
 python api_server.py
-
-# Test the agentic framework
-python agents/input_taker.py
 ```
 
----
-
-## 📝 **Usage Examples**
-
-### **Generate Recommendations**
-```python
-from agentic_framework import AgenticFramework
-
-framework = AgenticFramework()
-result = await framework.run_workflow({
-    'user_id': 'user123',
-    'budget': 10000,
-    'risk_tolerance': 'moderate',
-    'investment_goal': 'growth'
-})
-```
-
-### **Handle User Decision**
-```python
-from agents.manager_record_agent import handle_user_investment_decision
-
-result = await handle_user_investment_decision(
-    user_id='user123',
-    decision_type='buy',
-    stock_code='OGDC',
-    quantity=100,
-    price=85.50
-)
+**Launch Frontend:**
+```bash
+cd frontend
+npm run dev
 ```
 
 ---
 
 ## 🤝 **Contributing**
 
-This is a comprehensive AI-powered investment analysis platform for the Pakistan Stock Exchange (PSX). The system uses advanced agentic frameworks to provide personalized investment recommendations.
+BullBearPK is a professional-grade platform aimed at modernizing investment strategies for the Pakistani market. Contributions are welcome! Please open an issue or submit a pull request for any enhancements.
+
+---
+
+## 📄 **License**
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+<p align="center">
+  Developed with ❤️ for the Pakistani Financial Community.
+</p>
 
 ---
 

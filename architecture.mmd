@@ -1,0 +1,31 @@
+graph TD
+    subgraph Frontend ["🌐 Frontend (React + Vite)"]
+        UI["💻 User Interface (Tailwind CSS)"]
+        Store["📦 State Management (Zustand)"]
+        Axios["📡 API Services (Axios)"]
+    end
+
+    subgraph Backend ["⚙️ Backend (Flask API)"]
+        Server["🚀 API Server (api_server.py)"]
+        Blueprints["📋 Modular Blueprints (Auth, Market, Portfolio)"]
+    end
+
+    subgraph AI_Core ["🤖 Agentic Core (LangGraph)"]
+        Orchestrator["🧠 AgenticFramework"]
+        Agents["🕵️ Specialized Agents (Scrapers, Analyzers)"]
+    end
+
+    subgraph Data_Layer ["🗄️ Data Layer"]
+        DB[("🗄️ MySQL Database")]
+        FS["📁 File Storage (Scraped Data/Logs)"]
+    end
+
+    Frontend -- "REST API (Axios)" --> Backend
+    Backend -- "Workflow Dispatch" --> AI_Core
+    AI_Core -- "SQL (mysql-connector)" --> Data_Layer
+    Backend -- "SQL (mysql-connector)" --> Data_Layer
+
+    style Frontend fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    style Backend fill:#fff9c4,stroke:#fbc02d,stroke-width:2px
+    style AI_Core fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    style Data_Layer fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
